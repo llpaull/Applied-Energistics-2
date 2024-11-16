@@ -93,6 +93,7 @@ public final class PinnedKeys {
     }
 
     public enum PinReason {
-        CRAFTING
+        CRAFTING,
+        MANUAL,
     }
 }

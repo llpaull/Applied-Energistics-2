@@ -69,6 +69,8 @@ import appeng.api.util.IConfigurableObject;
 import appeng.api.util.KeyTypeSelection;
 import appeng.api.util.KeyTypeSelectionHost;
 import appeng.client.gui.me.common.MEStorageScreen;
+import appeng.client.gui.me.common.PinnedKeys;
+import appeng.client.gui.me.common.PinnedKeys.PinInfo;
 import appeng.core.AELog;
 import appeng.core.network.ServerboundPacket;
 import appeng.core.network.bidirectional.ConfigValuePacket;
@@ -413,6 +415,19 @@ public class MEStorageMenu extends AEBaseMenu
             var locator = getLocator();
             if (locator != null && clickedKey != null) {
                 CraftAmountMenu.open(player, locator, clickedKey, clickedKey.getAmountPerUnit());
+            }
+            return;
+        }
+
+        // Handle manual pinning
+        if (action == InventoryAction.PIN_KEY) {
+            if (clickedKey != null) {
+                if (PinnedKeys.isPinned(clickedKey)) {
+                    PinInfo info = PinnedKeys.getPinInfo(clickedKey);
+                    info.canPrune = true;
+                } else {
+                    PinnedKeys.pinKey(clickedKey, PinnedKeys.PinReason.MANUAL);
+                }
             }
             return;
         }

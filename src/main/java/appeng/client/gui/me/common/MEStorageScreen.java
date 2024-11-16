@@ -270,6 +270,8 @@ public class MEStorageScreen<C extends MEStorageMenu>
         if (InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_KEY_SPACE)) {
             // Move everything from the same group of slots (i.e. player inventory excluding hotbar)
             menu.handleInteraction(serial, InventoryAction.MOVE_REGION);
+        } else if (InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_KEY_P)) {
+            menu.handleInteraction(serial, InventoryAction.PIN_KEY);
         } else {
             InventoryAction action = null;
 
