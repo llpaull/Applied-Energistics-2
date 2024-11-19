@@ -270,8 +270,6 @@ public class MEStorageScreen<C extends MEStorageMenu>
         if (InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_KEY_SPACE)) {
             // Move everything from the same group of slots (i.e. player inventory excluding hotbar)
             menu.handleInteraction(serial, InventoryAction.MOVE_REGION);
-        } else if (InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_KEY_P)) {
-            menu.handleInteraction(serial, InventoryAction.PIN_KEY);
         } else {
             InventoryAction action = null;
 
@@ -751,6 +749,18 @@ public class MEStorageScreen<C extends MEStorageMenu>
 
         if (!this.searchField.isFocused() && isCloseHotkey(keyCode, scanCode)) {
             this.getPlayer().closeContainer();
+            return true;
+        }
+
+        // when p is pressed and hovering over an item, pin that item
+        if (!this.searchField.isFocused() && keyCode == GLFW.GLFW_KEY_P && isHovered()) {
+            if (this.hoveredSlot instanceof RepoSlot repoSlot) {
+                var entry = repoSlot.getEntry();
+                if (entry != null) {
+                    minecraft.player.sendSystemMessage(Component.literal("Pinned item: " + entry.getWhat()));
+                    menu.handleInteraction(entry.getSerial(), InventoryAction.PIN_KEY);
+                }
+            }
             return true;
         }
 
